@@ -27,7 +27,8 @@ RUN apt-get -y update && \
     apt-get -y install docker-ce
 
 # Install node.js
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
+ENV NODEJS_VERSION 10.x
+RUN curl -sL https://deb.nodesource.com/setup_${NODEJS_VERSION} | bash - && \
     apt-get -y update && apt-get -y install nodejs build-essential
 RUN npm config set spin=false && \
     npm config set progress=false
@@ -36,7 +37,8 @@ RUN npm config set spin=false && \
 RUN npm install depcheck npm-check -g
 
 # Install openjdk
-RUN apt-get -y update && apt-get -y install openjdk-8-jdk
+# ENV JAVA_VERSION 8
+# RUN apt-get -y update && apt-get -y install openjdk-${JAVA_VERSION}-jdk
 
 # Install helm
 RUN curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get \
@@ -63,14 +65,13 @@ RUN echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" \
     apt-get -y install ansible
 
 # Install terraform
+ENV TERRAFORM_VERSION 0.11.13
 WORKDIR /terraform
-RUN curl -o terraform.zip https://releases.hashicorp.com/terraform/0.11.10/terraform_0.11.10_linux_amd64.zip && \
+RUN curl -o terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
     unzip terraform.zip && \
     mv terraform /usr/local/bin/terraform
 WORKDIR /tmp
 RUN rm -rf /terraform
-
-# TODO install code climate or sonarqube for code quality analysis?
 
 # Install gcloud
 # TODO create a separate gcloud image?
