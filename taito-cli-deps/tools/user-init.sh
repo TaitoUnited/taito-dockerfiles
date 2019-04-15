@@ -7,5 +7,7 @@ su "${username}" -s /bin/sh -c "
   helm plugin install https://github.com/rimusz/helm-tiller &&
   helm tiller start-ci &&
   helm repo add taito-charts https://taitounited.github.io/taito-charts/ &&
+  helm repo add jetstack https://charts.jetstack.io &&
+  helm repo update &&
   helm tiller stop
 "
