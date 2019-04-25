@@ -73,6 +73,13 @@ RUN curl -o terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_V
 WORKDIR /tmp
 RUN rm -rf /terraform
 
+# Install AWS
+WORKDIR /tmp
+RUN curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" && \
+    unzip awscli-bundle.zip && \
+    ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws && \
+    rm -rf awscli*
+
 # Install gcloud
 # TODO create a separate gcloud image?
 RUN mkdir /builder
