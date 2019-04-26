@@ -11,8 +11,7 @@ RUN echo "deb http://http.debian.net/debian stretch-backports main" >> \
       /etc/apt/sources.list && \
     apt-get -y update && \
     apt-get -y install build-essential cpanminus perl perl-doc curl wget \
-      gnupg2 unzip less telnet jq apache2-utils vim nano wamerican groff \
-      golang-go
+      gnupg2 unzip less telnet jq apache2-utils vim nano wamerican groff
 ENV EDITOR=/bin/nano
 
 # Install docker (required for executing CI/CD builds on container)
@@ -79,7 +78,9 @@ WORKDIR /tmp
 RUN curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" && \
     unzip awscli-bundle.zip && \
     ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws && \
-    go get -u -v github.com/kubernetes-sigs/aws-iam-authenticator/cmd/aws-iam-authenticator && \
+    curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.12.7/2019-03-27/bin/linux/amd64/aws-iam-authenticator && \
+    chmod +x ./aws-iam-authenticator && \
+    mv ./aws-iam-authenticator /usr/local/bin/aws-iam-authenticator && \
     rm -rf awscli*
 
 # Install gcloud
