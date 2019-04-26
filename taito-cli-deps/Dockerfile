@@ -11,7 +11,8 @@ RUN echo "deb http://http.debian.net/debian stretch-backports main" >> \
       /etc/apt/sources.list && \
     apt-get -y update && \
     apt-get -y install build-essential cpanminus perl perl-doc curl wget \
-      gnupg2 unzip less telnet jq apache2-utils vim nano wamerican groff
+      gnupg2 unzip less telnet jq apache2-utils vim nano wamerican groff \
+      golang-go
 ENV EDITOR=/bin/nano
 
 # Install docker (required for executing CI/CD builds on container)
@@ -73,11 +74,12 @@ RUN curl -o terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_V
 WORKDIR /tmp
 RUN rm -rf /terraform
 
-# Install AWS
+# Install aws cli and aws-iam-authenticator
 WORKDIR /tmp
 RUN curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" && \
     unzip awscli-bundle.zip && \
     ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws && \
+    go get -u -v github.com/kubernetes-sigs/aws-iam-authenticator/cmd/aws-iam-authenticator && \
     rm -rf awscli*
 
 # Install gcloud
