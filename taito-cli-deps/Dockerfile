@@ -11,7 +11,8 @@ RUN echo "deb http://http.debian.net/debian stretch-backports main" >> \
       /etc/apt/sources.list && \
     apt-get -y update && \
     apt-get -y install build-essential cpanminus perl perl-doc curl wget \
-      gnupg2 unzip less telnet jq apache2-utils vim nano wamerican groff
+      gnupg2 unzip less telnet jq apache2-utils vim nano wamerican groff \
+      dnsutils
 ENV EDITOR=/bin/nano
 
 # Install docker (required for executing CI/CD builds on container)
