@@ -27,6 +27,10 @@ RUN apt-get -y update && \
     apt-get -y update && \
     apt-get -y install docker-ce
 
+# Install docker-compose (required for CI/CD tests)
+RUN curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
+    chmod +x /usr/local/bin/docker-compose
+
 # Install node.js
 ENV NODEJS_VERSION 10.x
 RUN curl -sL https://deb.nodesource.com/setup_${NODEJS_VERSION} | bash - && \
