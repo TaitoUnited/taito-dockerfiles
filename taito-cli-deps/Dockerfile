@@ -31,13 +31,6 @@ RUN apt-get -y update && \
 RUN curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
     chmod +x /usr/local/bin/docker-compose
 
-# Install java
-ENV JAVA_VERSION 8
-RUN apt-get -y update && apt-get -y install openjdk-${JAVA_VERSION}-jdk-headless
-
-# Install java tools
-RUN export SDKMAN_DIR="/usr/local/sdkman" && curl -s "https://get.sdkman.io" | bash
-
 # Install node.js
 ENV NODEJS_VERSION 10.x
 RUN curl -sL https://deb.nodesource.com/setup_${NODEJS_VERSION} | bash - && \
