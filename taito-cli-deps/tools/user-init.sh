@@ -8,6 +8,7 @@ su "${username}" -s /bin/sh -c "
   helm tiller start-ci &&
   helm repo add taito-charts https://taitounited.github.io/taito-charts/ &&
   helm repo add jetstack https://charts.jetstack.io &&
+  helm repo add bitnami https://charts.bitnami.com &&
   helm repo update &&
   helm tiller stop
 "
