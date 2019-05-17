@@ -62,14 +62,6 @@ RUN apt-get -y update && \
     cpanm --quiet --notest App::Sqitch && \
     rm -rf /var/lib/apt/lists/*
 
-# Install ansible
-RUN echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" \
-      >> /etc/apt/sources.list && \
-    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367 && \
-    (apt-get -y update || :) && \
-    apt-get -y install ansible && \
-    rm -rf /var/lib/apt/lists/*
-
 # Install terraform
 ENV TERRAFORM_VERSION 0.11.13
 WORKDIR /terraform
@@ -151,6 +143,14 @@ RUN curl https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 \
 RUN git clone https://github.com/bats-core/bats-core.git && \
     ./bats-core/install.sh /usr/local && \
     rm -rf bats-core
+
+# Install ansible
+RUN echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" \
+      >> /etc/apt/sources.list && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367 && \
+    (apt-get -y update || :) && \
+    apt-get -y install ansible && \
+    rm -rf /var/lib/apt/lists/*
 
 # Clean up
 # TODO: does not help -> should be done on the same layer as update/install
