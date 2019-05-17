@@ -4,7 +4,6 @@ MAINTAINER Taito United <support@taitounited.fi>
 USER root
 COPY . /taito-cli-deps
 WORKDIR /tmp
-RUN apt-get clean
 
 # Install some basic stuff required by the following steps and by some plugins
 RUN echo "deb http://http.debian.net/debian stretch-backports main" >> \
@@ -12,7 +11,8 @@ RUN echo "deb http://http.debian.net/debian stretch-backports main" >> \
     apt-get -y update && \
     apt-get -y install build-essential cpanminus perl perl-doc curl wget \
       gnupg2 unzip less telnet jq apache2-utils vim nano wamerican groff \
-      dnsutils
+      dnsutils && \
+    rm -rf /var/lib/apt/lists/*
 ENV EDITOR=/bin/nano
 
 # Install docker (required for executing CI/CD builds on container)
@@ -25,7 +25,8 @@ RUN apt-get -y update && \
       $(lsb_release -cs) \
       stable" && \
     apt-get -y update && \
-    apt-get -y install docker-ce
+    apt-get -y install docker-ce && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install docker-compose (required for CI/CD tests)
 RUN curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
@@ -34,7 +35,8 @@ RUN curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-c
 # Install node.js
 ENV NODEJS_VERSION 10.x
 RUN curl -sL https://deb.nodesource.com/setup_${NODEJS_VERSION} | bash - && \
-    apt-get -y update && apt-get -y install nodejs build-essential
+    apt-get -y update && apt-get -y install nodejs build-essential && \
+    rm -rf /var/lib/apt/lists/*
 RUN npm config set spin=false && \
     npm config set progress=false
 
@@ -50,26 +52,32 @@ RUN curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get \
 
 # Install postgres and mysql client
 RUN apt-get -y update && \
-    apt-get -y install postgresql-client mysql-client
+    apt-get -y install postgresql-client mysql-client && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install sqitch
 RUN apt-get -y update && \
     apt-get -y install libdbd-pg-perl libdatetime-perl libclone-perl \
       libperlio-utf8-strict-perl libhash-merge-perl && \
-    cpanm --quiet --notest App::Sqitch
+    cpanm --quiet --notest App::Sqitch && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install ansible
-RUN apt-get -y update && \
-    apt-get -y install ansible
+RUN echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" \
+      >> /etc/apt/sources.list && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367 && \
+    (apt-get -y update || :) && \
+    apt-get -y install ansible && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install terraform
 ENV TERRAFORM_VERSION 0.11.13
 WORKDIR /terraform
 RUN curl -o terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
     unzip terraform.zip && \
-    mv terraform /usr/local/bin/terraform
+    mv terraform /usr/local/bin/terraform && \
+    rm -rf /terraform
 WORKDIR /tmp
-RUN rm -rf /terraform
 
 # Install aws cli and aws-iam-authenticator
 WORKDIR /tmp
@@ -136,7 +144,8 @@ RUN curl https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 \
 #     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | \
 #       apt-key add - && \
 #     apt-get -y update && \
-#     apt-get -y install gcsfuse
+#     apt-get -y install gcsfuse && \
+#     rm -rf /var/lib/apt/lists/*
 
 # Install bats for taito-cli unit testing
 RUN git clone https://github.com/bats-core/bats-core.git && \
@@ -144,9 +153,10 @@ RUN git clone https://github.com/bats-core/bats-core.git && \
     rm -rf bats-core
 
 # Clean up
-RUN rm -rf /var/lib/apt/lists/* && \
-    # TODO apt-get autoremove -y && \
-    apt-get clean
+# TODO: does not help -> should be done on the same layer as update/install
+# RUN rm -rf /var/lib/apt/lists/* && \
+#     # TODO apt-get autoremove -y && \
+#     apt-get clean
 
 # Initialize root user
 RUN /taito-cli-deps/tools/user-init.sh root
