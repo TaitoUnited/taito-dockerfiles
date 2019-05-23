@@ -2,6 +2,12 @@
 
 username=${1}
 
+echo
+echo "-----------------------------------------------------------------"
+echo "Initializing user $username"
+echo "-----------------------------------------------------------------"
+echo
+
 su "${username}" -s /bin/sh -c "
   helm init --client-only &&
   helm plugin install https://github.com/rimusz/helm-tiller &&
