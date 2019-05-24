@@ -1,4 +1,4 @@
-FROM debian:stable-slim
+FROM debian:stable
 MAINTAINER Taito United <support@taitounited.fi>
 
 USER root
