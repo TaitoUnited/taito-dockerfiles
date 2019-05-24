@@ -1,4 +1,4 @@
-FROM debian:stretch
+FROM debian:stable-slim
 MAINTAINER Taito United <support@taitounited.fi>
 
 USER root
