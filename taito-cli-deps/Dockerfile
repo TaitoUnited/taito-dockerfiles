@@ -63,7 +63,7 @@ RUN apt-get -y update && \
     rm -rf /var/lib/apt/lists/*
 
 # Install terraform
-ENV TERRAFORM_VERSION 0.11.13
+ENV TERRAFORM_VERSION 0.12.1
 WORKDIR /terraform
 RUN curl -o terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip && \
     unzip terraform.zip && \
