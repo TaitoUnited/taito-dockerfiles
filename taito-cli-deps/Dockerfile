@@ -52,7 +52,7 @@ RUN curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get \
 
 # Install postgres and mysql client
 RUN apt-get -y update && \
-    apt-get -y install postgresql-client mysql-client && \
+    apt-get -y install postgresql-client default-mysql-client && \
     rm -rf /var/lib/apt/lists/*
 
 # Install sqitch
