@@ -10,16 +10,14 @@ RUN echo "deb http://http.debian.net/debian stretch-backports main" >> \
       /etc/apt/sources.list && \
     apt-get -y update && \
     apt-get -y install build-essential cpanminus perl perl-doc curl wget \
-      gnupg2 unzip less telnet jq apache2-utils vim nano wamerican groff \
-      dnsutils && \
+      gnupg unzip less telnet jq apache2-utils vim nano wamerican groff \
+      dnsutils git \
+      apt-transport-https ca-certificates software-properties-common && \
     rm -rf /var/lib/apt/lists/*
 ENV EDITOR=/bin/nano
 
 # Install docker (required for executing CI/CD builds on container)
-RUN apt-get -y update && \
-    apt-get -y install apt-transport-https ca-certificates \
-      software-properties-common && \
-    curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
       add-apt-repository \
       "deb [arch=amd64] https://download.docker.com/linux/debian \
       $(lsb_release -cs) \
@@ -83,44 +81,23 @@ RUN curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.
 
 # Install gcloud
 # TODO create a separate gcloud image?
-RUN mkdir /builder
-WORKDIR /builder
-RUN apt-get -y update && \
-    apt-get -y install gcc python2.7 python-dev python-setuptools \
-      ca-certificates software-properties-common && \
-      # python-software-properties && \
-
-    # Install Git
-    echo "deb http://ftp.us.debian.org/debian testing main contrib non-free" \
-      >> /etc/apt/sources.list && \
-      apt-get update && \
-      apt-get install -y git && \
-      apt-get clean all && \
-
-    # Setup Google Cloud SDK
-    curl https://dl.google.com/dl/ && \
-    curl https://dl.google.com/dl/cloudsdk/release/google-cloud-sdk.tar.gz | \
-      tar zxv -C /builder && \
-    CLOUDSDK_PYTHON="python2.7" /builder/google-cloud-sdk/install.sh \
-        --usage-reporting=false \
-        --bash-completion=false \
-        --disable-installation-options && \
-
-    # Install additional components
-    /builder/google-cloud-sdk/bin/gcloud -q components install \
-        alpha beta kubectl && \
-    /builder/google-cloud-sdk/bin/gcloud -q components update && \
-
-    # install crcmod
-    easy_install -U pip && \
+# TODO: openssh-client required?
+ENV CLOUD_SDK_VERSION=251.0.0
+ENV PATH "$PATH:/opt/google-cloud-sdk/bin/"
+RUN apt-get -qqy update && apt-get install -qqy \
+      gcc \
+      python-dev \
+      python-setuptools \
+      python-pip \
+      lsb-release && \
     pip install -U crcmod && \
-
-    # Clean up
-    apt-get -y remove gcc python-dev python-setuptools && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm -rf ~/.config/gcloud
-ENV PATH=/builder/google-cloud-sdk/bin/:$PATH
-WORKDIR /tmp
+    export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && \
+    echo "deb https://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" > \
+      /etc/apt/sources.list.d/google-cloud-sdk.list && \
+    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
+    apt-get update && \
+    apt-get install -y google-cloud-sdk=${CLOUD_SDK_VERSION}-0 kubectl && \
+    rm -rf /var/lib/apt/lists/*
 
 # Install gcloud sql proxy
 # TODO create a separate gcloud image?
@@ -151,12 +128,6 @@ RUN echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" \
     (apt-get -y update || :) && \
     apt-get -y install ansible && \
     rm -rf /var/lib/apt/lists/*
-
-# Clean up
-# TODO: does not help -> should be done on the same layer as update/install
-# RUN rm -rf /var/lib/apt/lists/* && \
-#     # TODO apt-get autoremove -y && \
-#     apt-get clean
 
 # Initialize root user
 RUN /taito-cli-deps/tools/user-init.sh root
