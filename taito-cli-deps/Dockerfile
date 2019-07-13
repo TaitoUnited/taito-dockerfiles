@@ -1,64 +1,21 @@
-FROM debian:stable
+FROM taitounited/taito-cli-deps:ci
 MAINTAINER Taito United <support@taitounited.fi>
 
-USER root
-COPY . /taito-cli-deps
-WORKDIR /tmp
-
-# Install some basic stuff required by the following steps and by some plugins
-RUN echo "deb http://http.debian.net/debian stretch-backports main" >> \
-      /etc/apt/sources.list && \
-    apt-get -y update && \
-    apt-get -y install build-essential cpanminus perl perl-doc curl wget \
-      gnupg unzip less telnet jq apache2-utils vim nano wamerican groff \
-      dnsutils git procps \
-      apt-transport-https ca-certificates software-properties-common && \
+# Install extra packages not needed on CI/CD
+RUN apt-get -y update && \
+    apt-get -y install \
+      perl-doc \
+      less \
+      telnet \
+      jq \
+      apache2-utils \
+      vim \
+      nano \
+      wamerican \
+      groff \
+      dnsutils && \
     rm -rf /var/lib/apt/lists/*
 ENV EDITOR=/bin/nano
-
-# Install docker (required for executing CI/CD builds on container)
-RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
-      add-apt-repository \
-      "deb [arch=amd64] https://download.docker.com/linux/debian \
-      $(lsb_release -cs) \
-      stable" && \
-    apt-get -y update && \
-    apt-get -y install docker-ce && \
-    rm -rf /var/lib/apt/lists/*
-
-# Install docker-compose (required for CI/CD tests)
-RUN curl -L "https://github.com/docker/compose/releases/download/1.24.0/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
-    chmod +x /usr/local/bin/docker-compose
-
-# Install node.js
-ENV NODEJS_VERSION 10.x
-RUN curl -sL https://deb.nodesource.com/setup_${NODEJS_VERSION} | bash - && \
-    apt-get -y update && apt-get -y install nodejs build-essential && \
-    rm -rf /var/lib/apt/lists/*
-RUN npm config set spin=false && \
-    npm config set progress=false
-
-# Install some global npm packages
-RUN npm install depcheck npm-check -g
-
-# Install helm
-RUN curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get \
-      > get_helm.sh && \
-    chmod 700 get_helm.sh && \
-    ./get_helm.sh && \
-    rm ./get_helm.sh
-
-# Install postgres and mysql client
-RUN apt-get -y update && \
-    apt-get -y install postgresql-client default-mysql-client && \
-    rm -rf /var/lib/apt/lists/*
-
-# Install sqitch
-RUN apt-get -y update && \
-    apt-get -y install libdbd-pg-perl libdatetime-perl libclone-perl \
-      libperlio-utf8-strict-perl libhash-merge-perl && \
-    cpanm --quiet --notest App::Sqitch && \
-    rm -rf /var/lib/apt/lists/*
 
 # Install terraform
 ENV TERRAFORM_VERSION 0.12.1
@@ -69,42 +26,13 @@ RUN curl -o terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_V
     rm -rf /terraform
 WORKDIR /tmp
 
-# Install aws cli and aws-iam-authenticator
-WORKDIR /tmp
-RUN curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip" && \
-    unzip awscli-bundle.zip && \
-    ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws && \
-    curl -o aws-iam-authenticator https://amazon-eks.s3-us-west-2.amazonaws.com/1.12.7/2019-03-27/bin/linux/amd64/aws-iam-authenticator && \
-    chmod +x ./aws-iam-authenticator && \
-    mv ./aws-iam-authenticator /usr/local/bin/aws-iam-authenticator && \
-    rm -rf awscli*
-
-# Install gcloud
-# TODO create a separate gcloud image?
-# TODO: openssh-client required?
-ENV CLOUD_SDK_VERSION=251.0.0
-ENV PATH "$PATH:/opt/google-cloud-sdk/bin/"
-RUN apt-get -qqy update && apt-get install -qqy \
-      gcc \
-      python-dev \
-      python-setuptools \
-      python-pip \
-      lsb-release && \
-    pip install -U crcmod && \
-    export CLOUD_SDK_REPO="cloud-sdk-$(lsb_release -c -s)" && \
-    echo "deb https://packages.cloud.google.com/apt $CLOUD_SDK_REPO main" > \
-      /etc/apt/sources.list.d/google-cloud-sdk.list && \
-    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
-    apt-get update && \
-    apt-get install -y google-cloud-sdk=${CLOUD_SDK_VERSION}-0 kubectl && \
+# Install ansible
+RUN echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" \
+      >> /etc/apt/sources.list && \
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367 && \
+    (apt-get -y update || :) && \
+    apt-get -y install ansible && \
     rm -rf /var/lib/apt/lists/*
-
-# Install gcloud sql proxy
-# TODO create a separate gcloud image?
-RUN curl https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 \
-      > cloud_sql_proxy && \
-    chmod +x cloud_sql_proxy && \
-    mv cloud_sql_proxy /usr/local/bin
 
 # Install gcsfuse for mounting google cloud storage buckets
 # TODO create a separate gcloud image?
@@ -115,21 +43,3 @@ RUN curl https://dl.google.com/cloudsql/cloud_sql_proxy.linux.amd64 \
 #     apt-get -y update && \
 #     apt-get -y install gcsfuse && \
 #     rm -rf /var/lib/apt/lists/*
-
-# Install bats for taito-cli unit testing
-RUN git clone https://github.com/bats-core/bats-core.git && \
-    ./bats-core/install.sh /usr/local && \
-    rm -rf bats-core
-
-# Install ansible
-RUN echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" \
-      >> /etc/apt/sources.list && \
-    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367 && \
-    (apt-get -y update || :) && \
-    apt-get -y install ansible && \
-    rm -rf /var/lib/apt/lists/*
-
-# Initialize root user
-RUN /taito-cli-deps/tools/user-init.sh root
-
-ENTRYPOINT ["bash"]
