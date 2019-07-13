@@ -11,7 +11,7 @@ RUN echo "deb http://http.debian.net/debian stretch-backports main" >> \
     apt-get -y update && \
     apt-get -y install build-essential cpanminus perl perl-doc curl wget \
       gnupg unzip less telnet jq apache2-utils vim nano wamerican groff \
-      dnsutils git \
+      dnsutils git procps \
       apt-transport-https ca-certificates software-properties-common && \
     rm -rf /var/lib/apt/lists/*
 ENV EDITOR=/bin/nano
