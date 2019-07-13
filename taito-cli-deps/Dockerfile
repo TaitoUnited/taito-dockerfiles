@@ -17,6 +17,9 @@ RUN apt-get -y update && \
     rm -rf /var/lib/apt/lists/*
 ENV EDITOR=/bin/nano
 
+# Install some global npm packages
+RUN npm install depcheck npm-check -g
+
 # Install terraform
 ENV TERRAFORM_VERSION 0.12.1
 WORKDIR /terraform

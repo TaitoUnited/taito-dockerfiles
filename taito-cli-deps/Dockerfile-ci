@@ -1,4 +1,4 @@
-FROM debian:stable
+FROM debian:stable-slim
 MAINTAINER Taito United <support@taitounited.fi>
 
 USER root
@@ -6,9 +6,8 @@ COPY . /taito-cli-deps
 WORKDIR /tmp
 
 # Install some basic stuff required by the following steps
-RUN echo "deb http://http.debian.net/debian stretch-backports main" >> \
-      /etc/apt/sources.list && \
-    apt-get -y update && \
+# TODO: Add and remove build tools on each layer separately
+RUN apt-get -y update && \
     apt-get -y install \
       build-essential \
       cpanminus \
@@ -46,9 +45,6 @@ RUN curl -sL https://deb.nodesource.com/setup_${NODEJS_VERSION} | bash - && \
 RUN npm config set spin=false && \
     npm config set progress=false
 
-# Install some global npm packages
-RUN npm install depcheck npm-check -g
-
 # Install helm
 RUN curl https://raw.githubusercontent.com/kubernetes/helm/master/scripts/get \
       > get_helm.sh && \
@@ -84,7 +80,6 @@ RUN curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.
 ENV CLOUD_SDK_VERSION=251.0.0
 ENV PATH "$PATH:/opt/google-cloud-sdk/bin/"
 RUN apt-get -qqy update && apt-get install -qqy \
-      gcc \
       python-dev \
       python-setuptools \
       python-pip \
