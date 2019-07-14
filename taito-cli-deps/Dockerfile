@@ -1,6 +1,10 @@
 FROM taitounited/taito-cli-deps:ci
 MAINTAINER Taito United <support@taitounited.fi>
 
+# TODO: Backwards compatibility for auth sessions. Remove later.
+RUN mkdir -p /builder/google-cloud-sdk/bin && \
+    ln -s /usr/bin/gcloud /builder/google-cloud-sdk/bin/gcloud
+
 # Install extra packages not needed on CI/CD
 RUN apt-get -y update && \
     apt-get -y install \
