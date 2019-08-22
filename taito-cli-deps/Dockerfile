@@ -8,6 +8,8 @@ RUN mkdir -p /builder/google-cloud-sdk/bin && \
 # Install extra packages not needed on CI/CD
 RUN apt-get -y update && \
     apt-get -y install \
+      curl \
+      unzip \
       perl-doc \
       less \
       telnet \
