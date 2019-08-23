@@ -1,4 +1,5 @@
-FROM debian:stable-slim
+# This docker image is cached on gcloud, saving ~800MB on file transfers
+FROM gcr.io/cloud-builders/docker
 MAINTAINER Taito United <support@taitounited.fi>
 
 USER root
@@ -6,9 +7,6 @@ COPY . /taito-cli-deps
 WORKDIR /tmp
 
 RUN /taito-cli-deps/tools/install-basic.sh
-
-# Install docker (required for executing CI/CD builds on container)
-RUN /taito-cli-deps/tools/install-docker.sh
 
 # Install docker-compose (required for CI/CD tests)
 RUN /taito-cli-deps/tools/install-docker-compose.sh
@@ -19,7 +17,11 @@ RUN /taito-cli-deps/tools/install-nodejs.sh
 RUN /taito-cli-deps/tools/install-helm.sh
 
 # Install postgres and mysql client
-RUN /taito-cli-deps/tools/install-db-clients.sh
+RUN set -eux; \
+    apt-get -qqy update && \
+    apt-get -qqy install postgresql-client mysql-client && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN /taito-cli-deps/tools/install-sqitch.sh
 
