@@ -1,5 +1,41 @@
-FROM taitounited/taito-cli-deps:ci
+FROM debian:stable-slim
 MAINTAINER Taito United <support@taitounited.fi>
+
+USER root
+COPY . /taito-cli-deps
+WORKDIR /tmp
+
+# This section is otherwise equal to ci, but doesn't have docker
+
+RUN /taito-cli-deps/tools/install-basic.sh
+
+ENV NODEJS_VERSION 10.x
+RUN /taito-cli-deps/tools/install-nodejs.sh
+
+RUN /taito-cli-deps/tools/install-helm.sh
+
+# Install postgres and mysql client
+RUN /taito-cli-deps/tools/install-db-clients.sh
+
+RUN /taito-cli-deps/tools/install-sqitch.sh
+
+# Install aws cli and aws-iam-authenticator
+RUN /taito-cli-deps/tools/install-aws.sh
+
+# Install gcloud
+# TODO create a separate gcloud image?
+# TODO: openssh-client required?
+ENV CLOUD_SDK_VERSION=251.0.0
+ENV PATH "$PATH:/opt/google-cloud-sdk/bin/"
+RUN /taito-cli-deps/tools/install-gcloud.sh
+
+# Install bats for Taito CLI unit testing
+RUN /taito-cli-deps/tools/install-bats.sh
+
+# Initialize root user
+RUN /taito-cli-deps/tools/user-init.sh root
+
+# -----
 
 # TODO: Backwards compatibility for auth sessions. Remove later.
 RUN mkdir -p /builder/google-cloud-sdk/bin && \
@@ -8,6 +44,8 @@ RUN mkdir -p /builder/google-cloud-sdk/bin && \
 # Install extra packages not needed on CI/CD
 RUN apt-get -y update && \
     apt-get -y install \
+      curl \
+      unzip \
       perl-doc \
       less \
       telnet \
@@ -18,6 +56,7 @@ RUN apt-get -y update && \
       wamerican \
       groff \
       dnsutils && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 ENV EDITOR=/bin/nano
 
@@ -39,6 +78,7 @@ RUN echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" \
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 93C4A3FD7BB9C367 && \
     (apt-get -y update || :) && \
     apt-get -y install ansible && \
+    apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
 # Install gcsfuse for mounting google cloud storage buckets
