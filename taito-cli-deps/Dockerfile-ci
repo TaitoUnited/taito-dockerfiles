@@ -26,13 +26,6 @@ RUN /taito-cli-deps/tools/install-sqitch.sh
 # Install aws cli and aws-iam-authenticator
 RUN /taito-cli-deps/tools/install-aws.sh
 
-# Install gcloud
-# TODO create a separate gcloud image?
-# TODO: openssh-client required?
-ENV CLOUD_SDK_VERSION=251.0.0
-ENV PATH "$PATH:/opt/google-cloud-sdk/bin/"
-RUN /taito-cli-deps/tools/install-gcloud.sh
-
 # Install bats for Taito CLI unit testing
 RUN /taito-cli-deps/tools/install-bats.sh
 

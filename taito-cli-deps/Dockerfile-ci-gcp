@@ -25,9 +25,6 @@ RUN set -eux; \
 
 RUN /taito-cli-deps/tools/install-sqitch.sh
 
-# Install aws cli and aws-iam-authenticator
-RUN /taito-cli-deps/tools/install-aws.sh
-
 # Install gcloud
 # TODO create a separate gcloud image?
 # TODO: openssh-client required?

@@ -1,0 +1,7 @@
+FROM taitounited/taito-cli-deps:ci
+MAINTAINER Taito United <support@taitounited.fi>
+
+# Install aws cli and aws-iam-authenticator
+RUN /taito-cli-deps/tools/install-aws.sh
+
+ENTRYPOINT ["bash"]
