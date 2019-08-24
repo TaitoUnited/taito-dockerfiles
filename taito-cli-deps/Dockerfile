@@ -14,16 +14,14 @@ RUN /taito-cli-deps/tools/install-nodejs.sh
 
 RUN /taito-cli-deps/tools/install-helm.sh
 
-# Install postgres and mysql client
+# Install database clients
 RUN /taito-cli-deps/tools/install-db-clients.sh
-
 RUN /taito-cli-deps/tools/install-sqitch.sh
 
 # Install aws cli and aws-iam-authenticator
 RUN /taito-cli-deps/tools/install-aws.sh
 
-# Install gcloud
-# TODO create a separate gcloud image?
+# Install gcloud sdk
 # TODO: openssh-client required?
 ENV CLOUD_SDK_VERSION=251.0.0
 ENV PATH "$PATH:/opt/google-cloud-sdk/bin/"
@@ -82,7 +80,6 @@ RUN echo "deb http://ppa.launchpad.net/ansible/ansible/ubuntu trusty main" \
     rm -rf /var/lib/apt/lists/*
 
 # Install gcsfuse for mounting google cloud storage buckets
-# TODO create a separate gcloud image?
 # RUN echo "deb http://packages.cloud.google.com/apt gcsfuse-stretch main" | \
 #       tee /etc/apt/sources.list.d/gcsfuse.list; \
 #     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | \

@@ -16,17 +16,15 @@ RUN /taito-cli-deps/tools/install-nodejs.sh
 
 RUN /taito-cli-deps/tools/install-helm.sh
 
-# Install postgres and mysql client
+# Install database clients
 RUN set -eux; \
     apt-get -qqy update && \
     apt-get -qqy install postgresql-client mysql-client && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
 RUN /taito-cli-deps/tools/install-sqitch.sh
 
-# Install gcloud
-# TODO create a separate gcloud image?
+# Install gcloud sdk
 # TODO: openssh-client required?
 ENV CLOUD_SDK_VERSION=251.0.0
 ENV PATH "$PATH:/opt/google-cloud-sdk/bin/"
