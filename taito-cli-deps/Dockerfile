@@ -22,7 +22,6 @@ RUN /taito-cli-deps/tools/install-sqitch.sh
 RUN /taito-cli-deps/tools/install-aws.sh
 
 # Install gcloud sdk
-# TODO: openssh-client required?
 ENV CLOUD_SDK_VERSION=251.0.0
 ENV PATH "$PATH:/opt/google-cloud-sdk/bin/"
 RUN /taito-cli-deps/tools/install-gcloud.sh

@@ -1,0 +1,38 @@
+# This docker image is cached on gcloud, saving ~800MB on file transfers
+FROM gcr.io/cloud-builders/docker
+MAINTAINER Taito United <support@taitounited.fi>
+
+USER root
+COPY . /taito-cli-deps
+WORKDIR /tmp
+
+RUN /taito-cli-deps/tools/install-basic.sh
+
+# Install docker-compose (required for CI/CD tests)
+RUN /taito-cli-deps/tools/install-docker-compose.sh
+
+ENV NODEJS_VERSION 10.x
+RUN /taito-cli-deps/tools/install-nodejs.sh
+
+RUN /taito-cli-deps/tools/install-helm.sh
+
+# Install database clients
+RUN set -eux; \
+    apt-get -qqy update && \
+    apt-get -qqy install postgresql-client mysql-client && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+RUN /taito-cli-deps/tools/install-sqitch.sh
+
+# Install gcloud sdk
+ENV CLOUD_SDK_VERSION=251.0.0
+ENV PATH "$PATH:/opt/google-cloud-sdk/bin/"
+RUN /taito-cli-deps/tools/install-gcloud.sh
+
+# Install bats for Taito CLI unit testing
+RUN /taito-cli-deps/tools/install-bats.sh
+
+# Initialize root user
+RUN /taito-cli-deps/tools/user-init.sh root
+
+ENTRYPOINT ["bash"]
