@@ -26,4 +26,7 @@ RUN /taito-cli-deps/tools/install-bats.sh
 # Initialize root user
 RUN /taito-cli-deps/tools/user-init.sh root
 
+# Image build chain test (TODO remove)
+RUN echo 1 > /taito-cli-deps/version.txt
+
 ENTRYPOINT ["bash"]
