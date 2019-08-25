@@ -6,4 +6,7 @@ ENV CLOUD_SDK_VERSION=259.0.0
 ENV PATH "$PATH:/opt/google-cloud-sdk/bin/"
 RUN /taito-cli-deps/tools/install-gcloud.sh
 
+# Image build chain test (TODO remove)
+RUN echo 2 > /taito-cli-deps/version-gcp.txt
+
 ENTRYPOINT ["bash"]
