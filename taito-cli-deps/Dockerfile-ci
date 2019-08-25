@@ -8,7 +8,7 @@ WORKDIR /tmp
 RUN /taito-cli-deps/tools/install-basic.sh
 
 # Install docker (required for executing CI/CD builds on container)
-RUN /taito-cli-deps/tools/install-docker.sh
+RUN /taito-cli-deps/tools/install-docker-bin.sh
 
 # Install docker-compose (required for CI/CD tests)
 RUN /taito-cli-deps/tools/install-docker-compose.sh
