@@ -3,8 +3,8 @@
 set -eux; \
     apt-get -qqy update && \
     apt-get -qqy install curl && \
-    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
-    echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee -a /etc/apt/sources.list.d/kubernetes.list && \
+    curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
+    echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list && \
     apt-get -qqy update && \
     apt-get -qqy install kubectl && \
     apt-get -qqy --purge remove curl && \
