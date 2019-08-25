@@ -1,8 +1,5 @@
 #!/usr/bin/env sh
 
-# TODO: move
-DOCKER_VERSION=19.03.1
-
 set -eux; \
     apt-get -qqy update && \
     apt-get -qqy install curl upx-ucl && \
