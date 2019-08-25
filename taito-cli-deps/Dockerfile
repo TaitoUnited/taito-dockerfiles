@@ -35,6 +35,7 @@ RUN /taito-cli-deps/tools/install-terraform.sh
 RUN /taito-cli-deps/tools/install-ansible.sh
 
 # Install aws cli and aws-iam-authenticator for AWS
+ENV AWS_VERSION=1.12.7/2019-03-27
 RUN /taito-cli-deps/tools/install-aws.sh
 
 # Install gcloud sdk for GCP
