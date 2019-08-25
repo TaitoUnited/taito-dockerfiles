@@ -1,4 +1,4 @@
-FROM taitounited/taito-cli-deps:base
+FROM taitounited/taito-cli-base
 MAINTAINER Taito United <support@taitounited.fi>
 
 # TODO: Backwards compatibility for auth sessions. Remove later.
@@ -28,7 +28,7 @@ ENV EDITOR=/bin/nano
 RUN npm install depcheck npm-check -g
 
 # Install terraform
-ENV TERRAFORM_VERSION 0.12.1
+ENV TERRAFORM_VERSION 0.12.7
 RUN /taito-cli-deps/tools/install-terraform.sh
 
 # Install ansible
@@ -39,7 +39,7 @@ ENV AWS_VERSION=1.12.7/2019-03-27
 RUN /taito-cli-deps/tools/install-aws.sh
 
 # Install gcloud sdk for GCP
-ENV CLOUD_SDK_VERSION=251.0.0
+ENV CLOUD_SDK_VERSION=259.0.0
 ENV PATH "$PATH:/opt/google-cloud-sdk/bin/"
 RUN /taito-cli-deps/tools/install-gcloud.sh
 
