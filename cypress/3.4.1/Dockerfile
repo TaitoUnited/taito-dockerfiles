@@ -1,4 +1,4 @@
-FROM node:lts-stretch-slim
+FROM node:lts-buster-slim
 
 # NOTE: modified version of https://raw.githubusercontent.com/cypress-io/cypress-docker-images/master/base/12.6.0/Dockerfile
 
