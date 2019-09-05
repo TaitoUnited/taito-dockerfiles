@@ -11,4 +11,4 @@ RUN mv qvarn-$VERSION qvarn
 WORKDIR /opt/qvarn
 RUN make env3
 
-CMD source ./env3/bin/activate && python3 ./qvarn-run
+CMD source ./env3/bin/activate && python3 ./qvarn-run --port 80
