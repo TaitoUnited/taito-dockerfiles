@@ -1,21 +1,17 @@
 # Miscellanous dockerfiles
 
-## Releasing new version
+## Releasing a new version
 
-1. Release tagged version
+1. Release tagged version by creating a git tag `NAME-VERSION` either with git or taito. For example:
 
-Create git tag `NAME-VERSION` either with git or taito. For example:
+    ```
+    taito tag: cypress-3.3.1
+    ```
 
-```
-taito tag: cypress-3.3.1
-```
+2. Release latest version of all dockerfiles by merging dev branch to master either with git or taito. For example:
 
-2. Release latest version of all dockerfiles
+    ```
+    taito env merge
+    ```
 
-Merge dev branch to master either with git or taito. For example:
-
-```
-taito env merge
-```
-
-> Alternatively you can also release latest version of single dockerfile by creating git tag `NAME-latest`.
+    > Alternatively you can also release latest version of a single dockerfile by creating a git tag `NAME-latest`.
