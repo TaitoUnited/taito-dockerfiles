@@ -1,6 +1,6 @@
 FROM python:3.7-alpine AS builder
 
-ENV VERSION master
+ENV VERSION qvarn-0.81
 
 WORKDIR /opt
 RUN apk add curl make gcc py3-virtualenv musl-dev libffi-dev postgresql-client postgresql-dev
