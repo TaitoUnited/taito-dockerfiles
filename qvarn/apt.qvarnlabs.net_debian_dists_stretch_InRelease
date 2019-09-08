@@ -1,0 +1,47 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Origin: QvarnLabs
+Suite: stretch
+Codename: stretch
+Date: Wed, 11 Apr 2018 16:55:34 UTC
+Architectures: amd64
+Components: main
+Description: packages from QvarnLabs built for Debian stretch
+MD5Sum:
+ c204911ce845e79970f8e236749672f1 8621 main/binary-amd64/Packages
+ 41b85ffa6de797a036be1ab085ae590e 2680 main/binary-amd64/Packages.gz
+ ec197b2fef1a392f61b833ad56d93a70 133 main/binary-amd64/Release
+ 49ad71daa5708b52af046eab2d086b15 8369 main/source/Sources
+ ef79db55cacf10149319962915d39247 2656 main/source/Sources.gz
+ 0d1fd27874d4b89b6c16e4673096ed26 134 main/source/Release
+SHA1:
+ 92b875d59f3d3ccb2e8b0f349e7b0992e327dd59 8621 main/binary-amd64/Packages
+ 4afed81736355a3a071c6fcebb788736d810a193 2680 main/binary-amd64/Packages.gz
+ 84c50df0d5e80cdb0740bc6e04896d45431ef7bf 133 main/binary-amd64/Release
+ 41ea4613248dd1c6c03fddd1554584bcb860dfdc 8369 main/source/Sources
+ 33d70223a69039b9c24b5bc9aeb19001eeca1415 2656 main/source/Sources.gz
+ 9b004c740b046d208944d7db0aa3c336619f58e1 134 main/source/Release
+SHA256:
+ a71f3ef2a9a7dcf03ef5ae3a4d064c320c5e8a87d539dc48a2633859db207ea9 8621 main/binary-amd64/Packages
+ 4c121318c378076aa2fba6d43cc62342045ebb59744a9150a98725f1e7107030 2680 main/binary-amd64/Packages.gz
+ 32daf18cfd1897d33ed5610890eb3a9b5a6a21ead67b6d1db51ea025d1d21c36 133 main/binary-amd64/Release
+ e981078271cdec0240d57062c25e0289d04a0c40e1aeb483efd382fba0f4ef56 8369 main/source/Sources
+ 4b29a1ae896739cbdbffcb8c120a74c512280e9ea8f277a616fe91db4b3ba8db 2656 main/source/Sources.gz
+ fc8239ce684632e8b406b2b9f0589e995a5c33401263dee674e15feec1db3f28 134 main/source/Release
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEhYQEYH/8xXVN5GCPFLzPeZ0Bas4FAlrOPgYACgkQFLzPeZ0B
+as62Xg//ef8K+DDxNTGk8VPadIv6ebc4JcmcfcPk9n5jT3RMHDy9mk+wEguo0YKb
+I36NMZ3FpHNpdd1YHGZdzA1Dh2t1nEtc1JhSNDesVtldWO6JvLa+DpeQJvdNf5HN
+xWWnPAfPz3Ki7N8+hXf4wpfbz+V/v7Y083w/bI5B81XezUTTkvC7rhZGwzl6GoJ3
+r2w2D7Zvw2zVIM9dgPyFTLeV//HEcMXH/B4qpiwINGp2D7cAkgkKBHYqgaYwXYZS
+wdc7f5rjtNMs4PaAPJAeNqPVj2LdbQevDeEE5rGTCaGTVUMS3NhkCdz94f34kv/S
+GUFIgWhcBOCF6sGc0SfEHAGiSHQB7l1b0Q2nkuT8fw1WxrNv4XKKQ0jphyAJNwa6
+5Psx8a4Waqe7N/1ySzo6d3zvB/s0bWs/+t9yMMk+IXqy+oWu/PNQoHZUXy+xmis9
+eFwO1hTvv2iz7Yzea8WNm0WH3SUm3vA15ecklvOMhSJqxqo/EaSSC/+/jvHjmdP4
+xoCo2wMc5Kxw5IrCwFUm/plS55MROphcixnCI6e1Q28nyal4Jo3SoSxsxpmPKR3I
+yh7lX+1HrbtOLHIy/1Nai7Z1TT2CF0A3wHQ1bAK54m21x14QvTNaRFnytwAyB5yi
+/+V7LFupvDoXLTQlF2HhvauJjqKhUyd1GDfrY9Ntp5Y5MZ/EGKI=
+=w4oS
+-----END PGP SIGNATURE-----

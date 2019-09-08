@@ -1,14 +1,15 @@
-FROM python:3.7-alpine AS builder
+FROM python:3.7
 
-ENV VERSION qvarn-0.81
+ENV VERSION 0.92
 
 WORKDIR /opt
-RUN apk add curl make gcc py3-virtualenv musl-dev libffi-dev postgresql-client postgresql-dev
-RUN curl -L https://github.com/vaultit/qvarn/archive/$VERSION.zip -o qvarn.zip
-RUN unzip qvarn.zip
-RUN mv qvarn-$VERSION qvarn
 
-WORKDIR /opt/qvarn
-RUN make env3
+RUN echo 'deb http://apt.qvarnlabs.net/debian stretch main' >> /etc/apt/sources.list
+COPY ./apt* /var/lib/apt/lists/
+RUN apt update
+RUN apt install -y qvarn-jsonb gunicorn3
 
-CMD source ./env3/bin/activate && python3 ./qvarn-run --port 80
+RUN mkdir /var/log/qvarn
+RUN cat /etc/qvarn/qvarn.conf
+
+CMD start_qvarn

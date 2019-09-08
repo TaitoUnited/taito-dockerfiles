@@ -1,0 +1,218 @@
+Package: python-cliapp
+Version: 1.20170827-1.debian9
+Architecture: all
+Maintainer: Lars Wirzenius <liw@liw.fi>
+Installed-Size: 195
+Depends: python (<< 2.8), python (>= 2.7), python:any (>= 2.6.6-7~), python-yaml
+Suggests: python-xdg
+Homepage: http://liw.fi/cliapp/
+Priority: optional
+Section: python
+Filename: pool/main/p/python-cliapp/python-cliapp_1.20170827-1.debian9_all.deb
+Size: 41710
+SHA256: 3410340759735fdf9d3637b0527bb383855a28bcf372c22874a1d5a5adeb17c0
+SHA1: 14dce2351ec59eb855fb208413b877d331e44f8e
+MD5sum: 51f036b01cefc8aebcb6044cf63cbaa1
+Description: Python framework for Unix command line programs
+ cliapp makes it easier to write typical Unix command line programs,
+ by taking care of the common tasks they need to do, such as
+ parsing the command line, reading configuration files, setting
+ up logging, iterating over lines of input files, and so on.
+
+Package: python-ttystatus
+Version: 0.38-1.debian9
+Architecture: all
+Maintainer: Lars Wirzenius <liw@liw.fi>
+Installed-Size: 109
+Depends: python (<< 2.8), python (>= 2.7), python:any (>= 2.6.6-7~)
+Homepage: http://liw.fi/ttystatus/
+Priority: optional
+Section: python
+Filename: pool/main/p/python-ttystatus/python-ttystatus_0.38-1.debian9_all.deb
+Size: 15388
+SHA256: d86f2a80012256b154e54d8b740123ad169df44a1939d4c048f3595ddea9e3d3
+SHA1: 3a604aa66f8da65129f5f0a52f0500ee4f1cade3
+MD5sum: 20d0b3e1769abf4f39de16de8d054693
+Description: terminal progress bar and status output for Python
+ ttystatus is a Python library for showing progress reporting and status
+ updates on terminals, for (Unix) command line programs. Output is
+ automatically adapted to the width of the terminal: truncated if it does
+ not fit, and re-sized if the terminal size changes.
+ .
+ Output is provided via widgets. Each widgets formats some data into
+ a suitable form for output. It gets the data either via its initializer,
+ or from key/value pairs maintained by the master object. The values are
+ set by the user. Every time a value is updated, widgets get updated
+ (although the terminal is only updated every so often to give user time
+ to actually read the output).
+ .
+ The output from ttystatus goes to the terminal (`/dev/tty`) and is
+ restricted to a single line.
+
+Package: python3-apifw
+Source: apifw
+Version: 0.31-1.debian9
+Architecture: all
+Maintainer: Lars Wirzenius <liw@liw.fi>
+Installed-Size: 41
+Depends: python3:any (>= 3.3.2-2~), python3-bottle, gunicorn3, python3-jwt, python3-crypto
+Homepage: http://liw.fi/apifw/
+Priority: optional
+Section: python
+Filename: pool/main/a/apifw/python3-apifw_0.31-1.debian9_all.deb
+Size: 7858
+SHA256: 35a87a19a22da57cd5dc23089a7a8d0e491813850f07f9502e96b32dc7c8e2d8
+SHA1: 2af0f6f981c2fe2db403ab2e49513facc76d3671
+MD5sum: 6eb045965c44c1374108fbb40f5e96da
+Description: Python framework for RESTful JSON API backends
+ This package contains the Python module apifw, which implements a small
+ framework for implemnting backends with a RESTful JSON HTTP API.
+
+Package: python3-cliapp
+Source: python-cliapp
+Version: 1.20170827-1.debian9
+Architecture: all
+Maintainer: Lars Wirzenius <liw@liw.fi>
+Installed-Size: 201
+Depends: python3:any (>= 3.3.2-2~), python3 (>= 3.4), python3-yaml
+Suggests: python3-xdg
+Homepage: http://liw.fi/cliapp/
+Priority: optional
+Section: python
+Filename: pool/main/p/python-cliapp/python3-cliapp_1.20170827-1.debian9_all.deb
+Size: 45704
+SHA256: 6dd124ec9f9b053f80beb29d63390d05762d279f24f87ef6284d5133019668f2
+SHA1: 63e3e0fca1821813ca171ab7af7d17ab206db5d7
+MD5sum: 378503edf4a18ea691a8527604b0d98c
+Description: Python framework for Unix command line programs
+ cliapp makes it easier to write typical Unix command line programs,
+ by taking care of the common tasks they need to do, such as
+ parsing the command line, reading configuration files, setting
+ up logging, iterating over lines of input files, and so on.
+
+Package: python3-slog
+Source: slog
+Version: 0.5-1.debian9
+Architecture: all
+Maintainer: Lars Wirzenius <liw@liw.fi>
+Installed-Size: 56
+Depends: python3-bottle, gunicorn3, python3-jwt, python3-crypto
+Homepage: http://liw.fi/slog/
+Priority: optional
+Section: python
+Filename: pool/main/s/slog/python3-slog_0.5-1.debian9_all.deb
+Size: 8750
+SHA256: 75c4ee0e6fc1f6afbb541d24f3a88684af1585b3a71d47d8fbf34858869bab27
+SHA1: 873c59f79eeaeb72966034c20f6749097197d196
+MD5sum: eff0cf055dfb8889b36781ef6ded7c29
+Description: Python library for structure (JSON) longs
+ This package contains the Python module slog, which implements structured
+ logs (a JSON object encoded per line).
+
+Package: python3-ttystatus
+Source: python-ttystatus
+Version: 0.38-1.debian9
+Architecture: all
+Maintainer: Lars Wirzenius <liw@liw.fi>
+Installed-Size: 105
+Depends: python3:any (>= 3.3.2-2~), python3
+Homepage: http://liw.fi/ttystatus/
+Priority: optional
+Section: python
+Filename: pool/main/p/python-ttystatus/python3-ttystatus_0.38-1.debian9_all.deb
+Size: 14972
+SHA256: d04d6ecfc8dd7d5f537ffc355c31753398a272eaaf2a7a853edbcdd286d8b03e
+SHA1: 26ef8b5853c3a73b35681ad41b4a3520baaf23fe
+MD5sum: d275eed787f0cea269202ac7e388865c
+Description: terminal progress bar and status output for Python
+ ttystatus is a Python library for showing progress reporting and status
+ updates on terminals, for (Unix) command line programs. Output is
+ automatically adapted to the width of the terminal: truncated if it does
+ not fit, and re-sized if the terminal size changes.
+ .
+ Output is provided via widgets. Each widgets formats some data into
+ a suitable form for output. It gets the data either via its initializer,
+ or from key/value pairs maintained by the master object. The values are
+ set by the user. Every time a value is updated, widgets get updated
+ (although the terminal is only updated every so often to give user time
+ to actually read the output).
+ .
+ The output from ttystatus goes to the terminal (`/dev/tty`) and is
+ restricted to a single line.
+
+Package: qvarn-common
+Source: qvarn-jsonb
+Version: 0.92-1.debian9
+Architecture: all
+Maintainer: QvarnLabs <info@qvarnlabs.com>
+Installed-Size: 261
+Depends: python3:any (>= 3.5~), python3 (>= 3.5), python3-yaml, python3-requests
+Priority: optional
+Section: web
+Filename: pool/main/q/qvarn-jsonb/qvarn-common_0.92-1.debian9_all.deb
+Size: 41808
+SHA256: 6eb202f849aa4b2e276b528a7beea7879de2aba25deece392ac9bd6480184369
+SHA1: 5819689b7b934ef8198686f491aef5aed1d7a7bc
+MD5sum: ccae62f08d46f755a0f10441d1153116
+Description: common files for Qvarn server, clients
+ This package contains common files between the Qvarn server and command
+ line utilities.
+ .
+ See qvarn-jsonb for the server package, and qvarn-utils for the
+ utilities.
+
+Package: qvarn-jsonb
+Version: 0.92-1.debian9
+Architecture: all
+Maintainer: QvarnLabs <info@qvarnlabs.com>
+Installed-Size: 87
+Depends: python3 (>= 3.5), qvarn-common
+Priority: optional
+Section: web
+Filename: pool/main/q/qvarn-jsonb/qvarn-jsonb_0.92-1.debian9_all.deb
+Size: 18408
+SHA256: ffb65894e24630ffea00e87d9b911aaf7c9f3ee09694b6593acdee6d7b164bc0
+SHA1: 9567b2e87db774144f97c766bf0f86b1e289c7ea
+MD5sum: 86a50b6d2a6c6f5874a02532162a7ab4
+Description: web service backend for structured data storage
+ This is a backend service for storing structured (JSON) and some
+ associated binary data using a REST-ful HTTP API and OpenID Connect
+ authentication.
+
+Package: qvarn-utils
+Source: qvarn-jsonb
+Version: 0.92-1.debian9
+Architecture: all
+Maintainer: QvarnLabs <info@qvarnlabs.com>
+Installed-Size: 83
+Depends: python3:any (>= 3.5~), python3 (>= 3.5), python3-yaml, qvarn-common, python3-cliapp, python3-ttystatus
+Priority: optional
+Section: web
+Filename: pool/main/q/qvarn-jsonb/qvarn-utils_0.92-1.debian9_all.deb
+Size: 18064
+SHA256: 75b764b94ad5258213079a8f1121f2dcf243bfd0439404a2ce0c433720a301a5
+SHA1: 6c836dd99ca5d2853e4a5c51fbee0d8d1fbf9e0d
+MD5sum: 8ec10ee4d8b716b3eb12c695c45e90ba
+Description: utilities for use with a Qvarn server
+ This package contains utilities qvarn-stats, qvarn-dump, and qvarn-copy,
+ which are command line utilities that use the Qvarn server API to do
+ various useful things.
+ .
+ See qvarn-jsonb for the server package.
+
+Package: qvisqve
+Version: 0.9-1.debian9
+Architecture: all
+Maintainer: QvarnLabs <info@qvarnlabs.com>
+Installed-Size: 94
+Depends: python3:any (>= 3.5~), python3 (>= 3.5), python3-apifw, python3-slog, python3-yaml, python3-crypto, python3-cryptography, python3-pycryptodome, python3-jwt, python3-requests
+Priority: optional
+Section: web
+Filename: pool/main/q/qvisqve/qvisqve_0.9-1.debian9_all.deb
+Size: 19720
+SHA256: 0680b709f17a27ddcca70f4b8433e91bc53d3e2ecd68ad28f6ee084efa855d84
+SHA1: 545ae4711833384c3298ae799687a0ffa3451c0a
+MD5sum: 74ef859f6a972ee3bfdb25f909365ca0
+Description: a thing
+ This is a thing.
+
