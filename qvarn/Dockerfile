@@ -8,6 +8,5 @@ RUN apt update
 RUN apt install -y qvarn-jsonb gunicorn3
 
 RUN mkdir /var/log/qvarn
-RUN cat /etc/qvarn/qvarn.conf
 
 CMD start_qvarn
