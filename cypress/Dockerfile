@@ -28,13 +28,13 @@ RUN apt-get update && \
   # clean up
   && rm -rf /var/lib/apt/lists/*
 
-RUN npm install -g npm@6.10.0
+RUN npm install -g npm@latest
 ENV TERM xterm
 ENV npm_config_loglevel warn
 ENV npm_config_unsafe_perm true
 
 # Pre-install Cypress so that it is stored in global cache: /root/.cache/Cypress
 WORKDIR /tmp/cypress
-RUN echo '{}' > package.json && npm install cypress@3.4.1
+RUN echo '{}' > package.json && npm install cypress@3.6.0
 WORKDIR /
 RUN rm -rf /tmp/cypress
