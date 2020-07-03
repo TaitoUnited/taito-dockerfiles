@@ -4,7 +4,7 @@ set -e
 
 SQUID=$(/usr/bin/which squid)
 
-echo "${SQUID_WHITELIST}" | tr ' ' '\n' > /run/sites.whitelist.txt
+echo "${SITES_WHITELIST}" | tr ' ' '\n' > /run/sites.whitelist.txt
 echo "Whitelist:"
 cat /run/sites.whitelist.txt
 
