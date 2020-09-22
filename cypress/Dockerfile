@@ -35,6 +35,6 @@ ENV npm_config_unsafe_perm true
 
 # Pre-install Cypress so that it is stored in global cache: /root/.cache/Cypress
 WORKDIR /tmp/cypress
-RUN echo '{}' > package.json && npm install cypress@4.9.0
+RUN echo '{}' > package.json && npm install cypress@4.12.1
 WORKDIR /
 RUN rm -rf /tmp/cypress
