@@ -5,7 +5,7 @@
 1. Release tagged version by creating a git tag `NAME-VERSION` either with git or taito. For example:
 
     ```
-    taito tag: cypress-3.3.1
+    taito tag cypress-7.2.0
     ```
 
 2. Release latest version of all dockerfiles by merging dev branch to master either with git or taito. For example:
