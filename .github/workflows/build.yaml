@@ -20,7 +20,7 @@ jobs:
           TAG=${GITHUB_REF#refs/tags/}
 
           echo "NAME=" >> $GITHUB_ENV
-          echo "VERSION=${BRANCH//master/}" >> $GITHUB_ENV
+          echo "VERSION=${BRANCH//master/latest}" >> $GITHUB_ENV
 
           # Support for git tags e.g. 'cypress-8.3.0'
           if [ ${GITHUB_REF} != ${TAG} ]; then
