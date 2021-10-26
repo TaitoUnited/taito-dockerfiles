@@ -1,4 +1,4 @@
-FROM node:14.17.0-buster
+FROM node:16.12.0-bullseye
 
 RUN apt-get update && \
   apt-get install --no-install-recommends -y \
@@ -61,6 +61,6 @@ RUN echo  " node version:    $(node -v) \n" \
 
 # Pre-install Cypress so that it is stored in global cache: /root/.cache/Cypress
 WORKDIR /tmp/cypress
-RUN echo '{}' > package.json && npm install cypress@8.3.0
+RUN echo '{}' > package.json && npm install cypress@8.7.0
 WORKDIR /
 RUN rm -rf /tmp/cypress
