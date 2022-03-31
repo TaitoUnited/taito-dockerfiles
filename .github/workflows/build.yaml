@@ -1,5 +1,5 @@
 ---
-name: 'build images'
+name: "build images"
 
 on:
   push:
@@ -57,3 +57,14 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ghcr.io/taitounited/cypress:${{ env.VERSION }}
+
+      - name: Build minio
+        uses: docker/build-push-action@v2
+        if: ${{ env.NAME == 'minio' || env.NAME == '' }}
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          file: ./minio/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ghcr.io/taitounited/minio:${{ env.VERSION }}
