@@ -61,6 +61,6 @@ RUN echo  " node version:    $(node -v) \n" \
 
 # Pre-install Cypress so that it is stored in global cache: /root/.cache/Cypress
 WORKDIR /tmp/cypress
-RUN echo '{}' > package.json && npm install cypress@9.7.0
+RUN echo '{}' > package.json && npm install cypress@10.9.0
 WORKDIR /
 RUN rm -rf /tmp/cypress
