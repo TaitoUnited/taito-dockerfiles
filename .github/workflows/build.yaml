@@ -9,6 +9,7 @@ on:
     tags:
       - cypress-*
       - minio-*
+      - autoheal-*
 
 jobs:
   build:
@@ -69,3 +70,14 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ghcr.io/taitounited/minio:${{ env.VERSION }}
+
+      - name: Build autoheal
+        uses: docker/build-push-action@v2
+        if: ${{ env.NAME == 'autoheal' || env.NAME == '' }}
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          file: ./autoheal/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ghcr.io/taitounited/autoheal:${{ env.VERSION }}
