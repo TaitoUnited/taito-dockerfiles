@@ -49,6 +49,17 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Build autoheal
+        uses: docker/build-push-action@v2
+        if: ${{ env.NAME == 'autoheal' || env.NAME == '' }}
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          file: ./autoheal/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ghcr.io/taitounited/autoheal:${{ env.VERSION }}
+
       - name: Build cypress
         uses: docker/build-push-action@v2
         if: ${{ env.NAME == 'cypress' || env.NAME == '' }}
@@ -71,13 +82,13 @@ jobs:
           push: true
           tags: ghcr.io/taitounited/minio:${{ env.VERSION }}
 
-      - name: Build autoheal
+      - name: Build runner
         uses: docker/build-push-action@v2
-        if: ${{ env.NAME == 'autoheal' || env.NAME == '' }}
+        if: ${{ env.NAME == 'runner' || env.NAME == '' }}
         with:
           builder: ${{ steps.buildx.outputs.name }}
           context: .
-          file: ./autoheal/Dockerfile
+          file: ./runner/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ghcr.io/taitounited/autoheal:${{ env.VERSION }}
+          tags: ghcr.io/taitounited/runner:${{ env.VERSION }}
