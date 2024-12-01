@@ -7,9 +7,10 @@ on:
       - dev
       - master
     tags:
+      - autoheal-*
       - cypress-*
       - minio-*
-      - autoheal-*
+      - runner-*
 
 jobs:
   build:
