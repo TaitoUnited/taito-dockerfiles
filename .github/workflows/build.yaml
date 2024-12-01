@@ -60,17 +60,6 @@ jobs:
           push: true
           tags: ghcr.io/taitounited/autoheal:${{ env.VERSION }}
 
-      - name: Build cypress
-        uses: docker/build-push-action@v2
-        if: ${{ env.NAME == 'cypress' || env.NAME == '' }}
-        with:
-          builder: ${{ steps.buildx.outputs.name }}
-          context: .
-          file: ./cypress/Dockerfile
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ghcr.io/taitounited/cypress:${{ env.VERSION }}
-
       - name: Build minio
         uses: docker/build-push-action@v2
         if: ${{ env.NAME == 'minio' || env.NAME == '' }}
@@ -92,3 +81,14 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ghcr.io/taitounited/runner:${{ env.VERSION }}
+
+      - name: Build cypress
+        uses: docker/build-push-action@v2
+        if: ${{ env.NAME == 'cypress' || env.NAME == '' }}
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          context: .
+          file: ./cypress/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ghcr.io/taitounited/cypress:${{ env.VERSION }}
