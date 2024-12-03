@@ -6,6 +6,6 @@ USER root
 RUN mkdir -p /builds && chown runner:runner /builds
 
 # Pull taito-cli:ci-gcp-dev on start
-RUN sed -i '/updateFile="update.finished"/a docker pull ghcr.io/taitounited/taito-cli:ci-gcp-dev' /home/runner/run-helper.sh.template
+# RUN sed -i '/updateFile="update.finished"/a docker pull ghcr.io/taitounited/taito-cli:ci-gcp-dev' /home/runner/run-helper.sh.template
 
 USER runner
