@@ -57,7 +57,7 @@ jobs:
         if: ${{ env.NAME == 'autoheal' || env.NAME == '' }}
         with:
           builder: ${{ steps.buildx.outputs.name }}
-          context: .
+          context: ./autoheal
           file: ./autoheal/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
@@ -68,7 +68,7 @@ jobs:
         if: ${{ env.NAME == 'dummy' || env.NAME == '' }}
         with:
           builder: ${{ steps.buildx.outputs.name }}
-          context: .
+          context: ./dummy
           file: ./dummy/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
@@ -79,7 +79,7 @@ jobs:
         if: ${{ env.NAME == 'minio' || env.NAME == '' }}
         with:
           builder: ${{ steps.buildx.outputs.name }}
-          context: .
+          context: ./minio
           file: ./minio/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
@@ -90,7 +90,7 @@ jobs:
         if: ${{ env.NAME == 'runner' || env.NAME == '' }}
         with:
           builder: ${{ steps.buildx.outputs.name }}
-          context: .
+          context: ./runner
           file: ./runner/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
@@ -112,7 +112,7 @@ jobs:
         if: ${{ env.NAME == 'cypress' || env.NAME == '' }}
         with:
           builder: ${{ steps.buildx.outputs.name }}
-          context: .
+          context: ./cypress
           file: ./cypress/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
