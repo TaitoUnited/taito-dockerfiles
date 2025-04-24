@@ -12,6 +12,10 @@ file_format = sys.argv[2] if len(sys.argv) > 2 else 'parquet' # parquet or csv
 include_date_suffix = (len(sys.argv) > 3 and sys.argv[3].lower() == 'true')
 
 
+# Logging
+debug = os.getenv('DEBUG', 'false').lower() == 'true'
+
+
 # Database settings
 db_host = os.environ['DATABASE_HOST']
 db_port = os.environ['DATABASE_PORT']
@@ -73,7 +77,10 @@ for db_table in db_tables:
         # Upload file to storage
         print(f"Uploading {file_path}.")
         if storage_type == 'AZURE_BLOB':
-            blob_client = BlobClient.from_blob_url(f"{storage_url}/{storage_path}/{file_name}?{storage_token}")
+            blob_url = f"{storage_url}/{storage_path}/{file_name}?{storage_token}"
+            if debug:
+                print(f"Blob URL: {blob_url}")
+            blob_client = BlobClient.from_blob_url(blob_url)
             with open(file_path, "rb") as data:
                 blob_client.upload_blob(
                     data,
