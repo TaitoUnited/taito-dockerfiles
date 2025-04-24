@@ -74,6 +74,10 @@ for db_table in db_tables:
             TO '{file_path}' ({duck_format});
         """)
 
+        # Print file stats
+        file_stats = os.stat(file_path)
+        print(f'File size in bytes: {file_stats.st_size}')
+
         # Upload file to storage
         print(f"Uploading {file_path}.")
         if storage_type == 'AZURE_BLOB':
