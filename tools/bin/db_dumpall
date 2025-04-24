@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# TODO:
+# - support dumping all or specific databases in archive format
+# - include support also excluding specific databases and database tables
