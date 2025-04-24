@@ -97,3 +97,6 @@ for db_table in db_tables:
             os.remove(file_path)
         except OSError:
             pass            
+
+
+print(f"✅ ALL DONE.")
