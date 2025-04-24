@@ -101,7 +101,7 @@ jobs:
         if: ${{ env.NAME == 'tools' || env.NAME == '' }}
         with:
           builder: ${{ steps.buildx.outputs.name }}
-          context: .
+          context: ./tools
           file: ./tools/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
