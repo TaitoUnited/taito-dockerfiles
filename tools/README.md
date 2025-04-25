@@ -2,9 +2,38 @@
 
 Reusable simple tools and scripts for running data exports as cron job, etc.
 
-Example helm.yaml usage:
+Minimal helm.yaml example:
 
 ```
+  services:
+    exports:
+      serviceEnabled: false # Used only for cronjobs
+      image: ghcr.io/taitounited/tools:1.2.0
+      secrets:
+        DATABASE_PASSWORD: ${db_database_app_secret}
+        STORAGE_TOKEN: ${taito_project}-${taito_env}-myanalytics-storage.sastoken
+      env:
+        DATABASE_HOST: "${db_database_real_host}"
+        DATABASE_PORT: "${db_database_real_port}"
+        DATABASE_NAME: ${db_database_name}
+        DATABASE_USER: ${db_database_app_username}
+        STORAGE_TYPE: AZURE_BLOB
+        STORAGE_URL: https://myanalytics.blob.core.windows.net/mycontainer
+        STORAGE_PATH: myproject
+      cronJobs:
+        # Exports database data to Azure blob storage
+        - name: azure
+          schedule: "0 21 * * *"
+          concurrencyPolicy: Replace
+          command:
+            - db_export
+            - my_table1,my_table2
+```
+
+Example with db proxy and network policies:
+
+```
+  services:
     exports:
       serviceEnabled: false # Used only for cronjobs
       image: ghcr.io/taitounited/tools:1.2.0
