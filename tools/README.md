@@ -25,12 +25,10 @@ Minimal helm.yaml example:
         - name: azure
           schedule: "0 21 * * *"
           concurrencyPolicy: Replace
-          command:
-            - db_export
-            - my_table1,my_table2
+          shellCommand: db_export my_table1,my_table2
 ```
 
-Example with db proxy and network policies:
+The same example with database proxy and network policies:
 
 ```
   services:
@@ -61,11 +59,5 @@ Example with db proxy and network policies:
         - name: azure
           schedule: "0 21 * * *"
           concurrencyPolicy: Replace
-          # Run db export for specific tables and finally quit the db proxy
-          command:
-            - sh
-            - -c
-            - >
-              db_export my_table1,my_table2;
-              exit_code=$?; curl -X POST localhost:9091/quitquitquit; exit $$exit_code
+          shellCommand: db_export my_table1,my_table2
 ```
