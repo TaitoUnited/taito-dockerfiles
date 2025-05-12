@@ -1,106 +1,157 @@
 #!/usr/bin/env python3
 
-import os, sys, datetime
+import os
+import sys
+import datetime
 import duckdb
 from azure.storage.blob import BlobClient, ContentSettings
 
 
-# Arguments
-# USAGE: db_export TABLENAMES [FILE_FORMAT] [INCLUDE_DATE_SUFFIX]
-db_tables = sys.argv[1].split(',')
-file_format = sys.argv[2] if len(sys.argv) > 2 else 'parquet' # parquet or csv
-include_date_suffix = (len(sys.argv) > 3 and sys.argv[3].lower() == 'true')
+def db_export(
+    # Export parameters
+    export_tables,
+    export_file_format,
+    # Database connection
+    db_host,
+    db_port,
+    db_database,
+    db_user,
+    db_password,
+    # Storage connection
+    storage_type,
+    storage_url,
+    storage_path,
+    storage_token,
+    # Additional options
+    include_date_filesuffix=False,
+    debug=False,
+):
+    # Duckdb init
+    duck_conn = duckdb.connect(database=":memory:")
+    duck_conn.execute("SET memory_limit='100MB'")
 
+    timestamp = datetime.datetime.now().replace(microsecond=0).isoformat()
+    file_suffix = f"-{timestamp}" if include_date_filesuffix else ""
 
-# Logging
-debug = os.getenv('DEBUG', 'false').lower() == 'true'
+    # Execute one table at a time
+    for db_table in export_tables:
+        file_name = f"{db_table}{file_suffix}.{export_file_format}"
+        file_path = f"/tmp/{file_name}"
 
-
-# Database settings
-db_host = os.environ['DATABASE_HOST']
-db_port = os.environ['DATABASE_PORT']
-db_database = os.environ['DATABASE_NAME']
-db_user = os.environ['DATABASE_USER']
-db_password = os.getenv('DATABASE_PASSWORD')
-if db_password is None:
-    db_password_file = os.getenv('DATABASE_PASSWORD_FILE', '/run/secrets/DATABASE_PASSWORD')
-    with open(db_password_file, 'r') as file:
-        db_password = file.read().strip()
-
-
-# Storage settings
-storage_type = os.environ['STORAGE_TYPE']
-storage_url = os.environ['STORAGE_URL']
-storage_path = os.environ['STORAGE_PATH']
-storage_token = os.getenv('STORAGE_TOKEN')
-if storage_token is None:
-    storage_token_file = os.getenv('STORAGE_TOKEN_FILE', '/run/secrets/STORAGE_TOKEN')
-    with open(storage_token_file, 'r') as file:
-        storage_token = file.read().strip()
-
-
-# Duckdb init
-duck_conn = duckdb.connect(database=':memory:')
-duck_conn.execute("SET memory_limit='100MB'")
-
-
-timestamp = datetime.datetime.now().replace(microsecond=0).isoformat()
-file_suffix = f"-{timestamp}" if include_date_suffix else ''
-
-# Execute one table at a time
-for db_table in db_tables:
-    file_name = f"{db_table}{file_suffix}.{file_format}"
-    file_path = f"/tmp/{file_name}"
-
-    try:
-        # Write data to a file
-        print(f"Writing {file_path}.")
-
-        if file_format == 'csv':
-            duck_format = "FORMAT CSV"
-        elif file_format == 'parquet':
-            duck_format = "FORMAT PARQUET, CODEC 'SNAPPY'"
-        else:
-            raise Exception(f"Unknown file format: {file_format}")
-
-        duck_conn.execute(f"""
-            COPY (
-                SELECT * FROM postgres_scan(
-                    'host={db_host} port={db_port} user={db_user} password={db_password} dbname={db_database}',
-                    'public',
-                    '{db_table}'
-                )
-            )
-            TO '{file_path}' ({duck_format});
-        """)
-
-        # Print file stats
-        file_stats = os.stat(file_path)
-        print(f'File size in bytes: {file_stats.st_size}')
-
-        # Upload file to storage
-        print(f"Uploading {file_path}.")
-        if storage_type == 'AZURE_BLOB':
-            blob_url = f"{storage_url}/{storage_path}/{file_name}?{storage_token}"
-            if debug:
-                print(f"Blob URL: {blob_url}")
-            blob_client = BlobClient.from_blob_url(blob_url)
-            with open(file_path, "rb") as data:
-                blob_client.upload_blob(
-                    data,
-                    overwrite=True,
-                    content_settings=ContentSettings(content_type='application/octet-stream')
-                )
-        else:
-            raise Exception(f"Unknown storage type: {storage_type}")
-        print(f"✅ Uploaded {file_path}.")
-
-    finally:
-        # Cleanup
         try:
-            os.remove(file_path)
-        except OSError:
-            pass            
+            # Write data to a file
+            print(f"Writing {file_path}.")
+
+            if export_file_format == "csv":
+                duck_format = "FORMAT CSV"
+            elif export_file_format == "parquet":
+                duck_format = "FORMAT PARQUET, CODEC 'SNAPPY'"
+            else:
+                raise Exception(f"Unknown file format: {export_file_format}")
+
+            duck_conn.execute(
+                f"""
+                COPY (
+                    SELECT * FROM postgres_scan(
+                        'host={db_host} port={db_port} user={db_user} password={db_password} dbname={db_database}',
+                        'public',
+                        '{db_table}'
+                    )
+                )
+                TO '{file_path}' ({duck_format});
+            """
+            )
+
+            # Print file stats
+            file_stats = os.stat(file_path)
+            print(f"File size in bytes: {file_stats.st_size}")
+
+            # Upload file to storage
+            print(f"Uploading {file_path}.")
+            if storage_type == "AZURE_BLOB":
+                blob_url = (
+                    f"{storage_url}/{storage_path}/{file_name}?{storage_token}"
+                )
+                if debug:
+                    print(f"Blob URL: {blob_url}")
+                blob_client = BlobClient.from_blob_url(blob_url)
+                with open(file_path, "rb") as data:
+                    blob_client.upload_blob(
+                        data,
+                        overwrite=True,
+                        content_settings=ContentSettings(
+                            content_type="application/octet-stream"
+                        ),
+                    )
+            else:
+                raise Exception(f"Unknown storage type: {storage_type}")
+            print(f"✅ Uploaded {file_path}.")
+
+        finally:
+            # Cleanup
+            try:
+                os.remove(file_path)
+            except OSError:
+                pass
+
+    print("✅ ALL DONE.")
 
 
-print(f"✅ ALL DONE.")
+def main():
+    # Arguments
+    # USAGE: db_export TABLENAMES [FILE_FORMAT] [INCLUDE_DATE_SUFFIX]
+    db_tables = sys.argv[1].split(",")
+    file_format = (
+        sys.argv[2] if len(sys.argv) > 2 else "parquet"
+    )  # parquet or csv
+    include_date_suffix = len(sys.argv) > 3 and sys.argv[3].lower() == "true"
+
+    # Logging
+    debug = os.getenv("DEBUG", "false").lower() == "true"
+
+    # Database settings
+    db_host = os.environ["DATABASE_HOST"]
+    db_port = os.environ["DATABASE_PORT"]
+    db_database = os.environ["DATABASE_NAME"]
+    db_user = os.environ["DATABASE_USER"]
+    db_password = os.getenv("DATABASE_PASSWORD")
+    if db_password is None:
+        db_password_file = os.getenv(
+            "DATABASE_PASSWORD_FILE", "/run/secrets/DATABASE_PASSWORD"
+        )
+        with open(db_password_file, "r") as file:
+            db_password = file.read().strip()
+
+    # Storage settings
+    storage_type = os.environ["STORAGE_TYPE"]
+    storage_url = os.environ["STORAGE_URL"]
+    storage_path = os.environ["STORAGE_PATH"]
+    storage_token = os.getenv("STORAGE_TOKEN")
+    if storage_token is None:
+        storage_token_file = os.getenv(
+            "STORAGE_TOKEN_FILE", "/run/secrets/STORAGE_TOKEN"
+        )
+        with open(storage_token_file, "r") as file:
+            storage_token = file.read().strip()
+
+    db_export(
+        db_tables,
+        file_format,
+        include_date_suffix,
+        debug,
+        # Database connection
+        db_host,
+        db_port,
+        db_database,
+        db_user,
+        db_password,
+        # Storage connection
+        storage_type,
+        storage_url,
+        storage_path,
+        storage_token,
+    )
+
+
+if __name__ == "__main__":
+    main()
