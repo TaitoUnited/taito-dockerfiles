@@ -136,8 +136,6 @@ def main():
     db_export(
         db_tables,
         file_format,
-        include_date_suffix,
-        debug,
         # Database connection
         db_host,
         db_port,
@@ -149,6 +147,9 @@ def main():
         storage_url,
         storage_path,
         storage_token,
+        # Additional options
+        include_date_suffix=include_date_suffix,
+        debug=debug,
     )
 
 
