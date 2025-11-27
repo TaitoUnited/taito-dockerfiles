@@ -148,7 +148,7 @@ def main():
         storage_path,
         storage_token,
         # Additional options
-        include_date_suffix=include_date_suffix,
+        include_date_filesuffix=include_date_suffix,
         debug=debug,
     )
 
